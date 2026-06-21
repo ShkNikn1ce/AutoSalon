@@ -1,7 +1,11 @@
 package com.Nikita.AutoSalon.dto;
 
 import com.Nikita.AutoSalon.enums.PurchaseRequestStatus;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class PurchaseRequestResponse {
     private Long id;
     private Long customerId;
