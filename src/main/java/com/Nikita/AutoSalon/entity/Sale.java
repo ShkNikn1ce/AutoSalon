@@ -28,6 +28,10 @@ public class Sale {
     @JoinColumn(name = "customer_id", nullable = false)
     private User customer;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sale_id", nullable = false)
+    private Sale sale;
+
     @Column(nullable = false)
     private LocalDateTime saleDate;
 

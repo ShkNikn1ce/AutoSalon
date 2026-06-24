@@ -30,6 +30,9 @@ public class PurchaseRequest { //Таблица заявок клиентов н
     @Column(length = 1000)
     private String comment;
 
+    @Column(length = 1000)
+    private String rejectReason;
+
     @Column(nullable = false)
     private LocalDateTime createdAt;
 

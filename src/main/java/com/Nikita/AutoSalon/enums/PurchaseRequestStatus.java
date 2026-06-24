@@ -4,5 +4,6 @@ public enum PurchaseRequestStatus {
     NEW,
     IN_PROGRESS,
     APPROVED,
-    REJECTED
+    REJECTED,
+    COMPLETED
 }

@@ -9,6 +9,7 @@ import com.Nikita.AutoSalon.enums.Roles;
 import com.Nikita.AutoSalon.repository.CarRepository;
 import com.Nikita.AutoSalon.repository.PurchaseRequestRepository;
 import com.Nikita.AutoSalon.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
@@ -22,7 +23,8 @@ public class PurchaseRequestService {
     private final UserRepository userRepository;
     private final CarRepository carRepository;
 
-    //Проверка активной заявки
+    //Создание заявки
+    @Transactional
     public PurchaseRequest createRequest(CreatePurchaseRequestRequest request) {
         PurchaseRequest purchaseRequest = new PurchaseRequest();
 
@@ -49,6 +51,7 @@ public class PurchaseRequestService {
 
         purchaseRequest.setCustomer(customer);
         purchaseRequest.setCar(requestCar);
+        requestCar.setStatus(CarStatus.RESERVED);
         purchaseRequest.setComment(request.getComment());
         purchaseRequest.setCreatedAt(LocalDateTime.now());
         purchaseRequest.setStatus(PurchaseRequestStatus.NEW);
@@ -83,4 +86,48 @@ public class PurchaseRequestService {
         }
         return purchaseRequestRepository.findByManagerId(id);
     }
+
+    //Назначение сотрудника на заявку о продаже автомобиля
+    public PurchaseRequest assignManager(Long requestId, Long managerId){
+        PurchaseRequest request = purchaseRequestRepository.findById(requestId).orElseThrow(()->
+                new RuntimeException("Такой заявки не существует!"));
+        if(request.getStatus()!=PurchaseRequestStatus.NEW){
+            throw new RuntimeException("Данная заявка уже существует и находится в работе!");
+        }
+
+        User manager = userRepository.findById(managerId).orElseThrow(()-> new RuntimeException("Такого пользователя не существует!"));
+        if(manager.getRole()!=Roles.MANAGER){
+            throw new RuntimeException("Данный пользователь не является сотрудником!");
+        }
+        request.setManager(manager);
+        request.setStatus(PurchaseRequestStatus.IN_PROGRESS);
+        return purchaseRequestRepository.save(request);
+    }
+
+    //Изменение статуса. Одобрение заявки
+    public PurchaseRequest approveRequest(Long requestId){
+        PurchaseRequest request = purchaseRequestRepository.findById(requestId).orElseThrow(()->
+                new RuntimeException("Такой заявки не существует!"));
+        if(request.getStatus()!=PurchaseRequestStatus.IN_PROGRESS){
+            throw new RuntimeException("Данная заявка не взята в работу сотрудником!");
+        }
+        if(request.getManager()==null){
+            throw new RuntimeException("У заявки не назначен менеджер");
+        }
+        request.setStatus(PurchaseRequestStatus.APPROVED);
+        return purchaseRequestRepository.save(request);
+    }
+
+    //Изменение статуса. Отклонение заявки
+    public PurchaseRequest rejectRequest(Long requestId, String reason){
+        PurchaseRequest request = purchaseRequestRepository.findById(requestId).orElseThrow(()->
+                new RuntimeException("Такой заявки не существует!"));
+        if(request.getStatus()!=PurchaseRequestStatus.IN_PROGRESS){
+            throw new RuntimeException("Данная заявка не взята в работу сотрудником!");
+        }
+        request.setStatus(PurchaseRequestStatus.REJECTED);
+        request.setRejectReason(reason);
+        return purchaseRequestRepository.save(request);
+    }
+
 }
