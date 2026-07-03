@@ -5,10 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserResponse {
-    private Long UserId;
+public class CreateUserRequest {
     private String firstName;
     private String lastName;
     private String email;
     private String phone;
+    private String password;
 }

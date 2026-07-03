@@ -5,6 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CreateBrandRequest {
+public class UpdateBrandRequest {
     private String name;
 }
