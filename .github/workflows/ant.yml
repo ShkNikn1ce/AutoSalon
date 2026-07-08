@@ -21,7 +21,5 @@ jobs:
       with:
         java-version: '17'
         distribution: 'temurin'
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-    - name: Build with Ant
-      run: ./gradlew build
+    - name: Build with Maven
+      run: mvn clean install
