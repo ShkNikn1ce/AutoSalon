@@ -263,8 +263,8 @@ HTTP Response
 После назначения:
 
 ```
-NEW
-        ↓
+   NEW
+    ↓
 IN_PROGRESS
 ```
 
@@ -280,9 +280,9 @@ IN_PROGRESS
 После одобрения:
 
 ```
-IN_PROGRESS
+   IN_PROGRESS
         ↓
-APPROVED
+   APPROVED
 ```
 
 ---
@@ -292,9 +292,9 @@ APPROVED
 После отклонения:
 
 ```
-IN_PROGRESS
+   IN_PROGRESS
         ↓
-REJECTED
+   REJECTED
 ```
 
 Сохраняется причина отказа.
@@ -315,17 +315,17 @@ REJECTED
 ```
 Автомобиль
 
-AVAILABLE
+   AVAILABLE
       ↓
-SOLD
+   SOLD
 ```
 
 ```
 Заявка
 
-APPROVED
+   APPROVED
       ↓
-COMPLETED
+   COMPLETED
 ```
 
 ---
