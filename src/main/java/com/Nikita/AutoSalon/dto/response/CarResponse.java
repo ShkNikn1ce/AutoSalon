@@ -1,4 +1,4 @@
-package com.Nikita.AutoSalon.dto;
+package com.Nikita.AutoSalon.dto.response;
 import com.Nikita.AutoSalon.enums.CarStatus;
 import lombok.Getter;
 import lombok.Setter;

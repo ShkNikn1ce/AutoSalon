@@ -1,7 +1,7 @@
 package com.Nikita.AutoSalon.mapper;
 
-import com.Nikita.AutoSalon.dto.SaleDetailResponse;
-import com.Nikita.AutoSalon.dto.SaleResponse;
+import com.Nikita.AutoSalon.dto.response.SaleDetailResponse;
+import com.Nikita.AutoSalon.dto.response.SaleResponse;
 import com.Nikita.AutoSalon.entity.Car;
 import com.Nikita.AutoSalon.entity.Sale;
 import com.Nikita.AutoSalon.entity.User;

@@ -1,7 +1,7 @@
 package com.Nikita.AutoSalon.controller;
 
-import com.Nikita.AutoSalon.dto.CreatePurchaseRequestRequest;
-import com.Nikita.AutoSalon.dto.PurchaseRequestResponse;
+import com.Nikita.AutoSalon.dto.request.CreatePurchaseRequestRequest;
+import com.Nikita.AutoSalon.dto.response.PurchaseRequestResponse;
 import com.Nikita.AutoSalon.enums.PurchaseRequestStatus;
 import com.Nikita.AutoSalon.service.PurchaseRequestService;
 import lombok.AllArgsConstructor;

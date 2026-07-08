@@ -1,8 +1,8 @@
 package com.Nikita.AutoSalon.service;
 
-import com.Nikita.AutoSalon.dto.BrandResponse;
-import com.Nikita.AutoSalon.dto.CreateBrandRequest;
-import com.Nikita.AutoSalon.dto.UpdateBrandRequest;
+import com.Nikita.AutoSalon.dto.response.BrandResponse;
+import com.Nikita.AutoSalon.dto.request.CreateBrandRequest;
+import com.Nikita.AutoSalon.dto.request.UpdateBrandRequest;
 import com.Nikita.AutoSalon.entity.Brand;
 import com.Nikita.AutoSalon.mapper.BrandMapper;
 import com.Nikita.AutoSalon.repository.BrandRepository;

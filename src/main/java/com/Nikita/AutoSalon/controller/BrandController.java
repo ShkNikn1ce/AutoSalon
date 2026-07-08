@@ -1,9 +1,8 @@
 package com.Nikita.AutoSalon.controller;
 
-import com.Nikita.AutoSalon.dto.BrandResponse;
-import com.Nikita.AutoSalon.dto.CreateBrandRequest;
-import com.Nikita.AutoSalon.dto.UpdateBrandRequest;
-import com.Nikita.AutoSalon.dto.UpdateUserRequest;
+import com.Nikita.AutoSalon.dto.response.BrandResponse;
+import com.Nikita.AutoSalon.dto.request.CreateBrandRequest;
+import com.Nikita.AutoSalon.dto.request.UpdateBrandRequest;
 import com.Nikita.AutoSalon.service.BrandService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

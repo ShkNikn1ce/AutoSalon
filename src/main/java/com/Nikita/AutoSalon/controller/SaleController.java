@@ -1,8 +1,8 @@
 package com.Nikita.AutoSalon.controller;
 
-import com.Nikita.AutoSalon.dto.CreateSaleRequest;
-import com.Nikita.AutoSalon.dto.SaleDetailResponse;
-import com.Nikita.AutoSalon.dto.SaleResponse;
+import com.Nikita.AutoSalon.dto.request.CreateSaleRequest;
+import com.Nikita.AutoSalon.dto.response.SaleDetailResponse;
+import com.Nikita.AutoSalon.dto.response.SaleResponse;
 import com.Nikita.AutoSalon.service.SaleService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -1,7 +1,7 @@
 package com.Nikita.AutoSalon.service;
-import com.Nikita.AutoSalon.dto.CreateSaleRequest;
-import com.Nikita.AutoSalon.dto.SaleDetailResponse;
-import com.Nikita.AutoSalon.dto.SaleResponse;
+import com.Nikita.AutoSalon.dto.request.CreateSaleRequest;
+import com.Nikita.AutoSalon.dto.response.SaleDetailResponse;
+import com.Nikita.AutoSalon.dto.response.SaleResponse;
 import com.Nikita.AutoSalon.entity.Car;
 import com.Nikita.AutoSalon.entity.PurchaseRequest;
 import com.Nikita.AutoSalon.entity.Sale;

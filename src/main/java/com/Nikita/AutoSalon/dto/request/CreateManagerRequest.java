@@ -1,4 +1,4 @@
-package com.Nikita.AutoSalon.dto;
+package com.Nikita.AutoSalon.dto.request;
 
 public class CreateManagerRequest {
     private String firstName;

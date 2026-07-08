@@ -1,6 +1,6 @@
 package com.Nikita.AutoSalon.mapper;
 
-import com.Nikita.AutoSalon.dto.UserResponse;
+import com.Nikita.AutoSalon.dto.response.UserResponse;
 import com.Nikita.AutoSalon.entity.User;
 import org.springframework.stereotype.Component;
 

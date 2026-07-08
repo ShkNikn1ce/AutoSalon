@@ -1,8 +1,8 @@
 package com.Nikita.AutoSalon.service;
 
-import com.Nikita.AutoSalon.dto.CarResponse;
-import com.Nikita.AutoSalon.dto.CreateCarRequest;
-import com.Nikita.AutoSalon.dto.UpdateCarRequest;
+import com.Nikita.AutoSalon.dto.response.CarResponse;
+import com.Nikita.AutoSalon.dto.request.CreateCarRequest;
+import com.Nikita.AutoSalon.dto.request.UpdateCarRequest;
 import com.Nikita.AutoSalon.entity.Brand;
 import com.Nikita.AutoSalon.entity.Car;
 import com.Nikita.AutoSalon.enums.CarStatus;
