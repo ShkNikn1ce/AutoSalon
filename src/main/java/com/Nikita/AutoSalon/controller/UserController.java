@@ -30,8 +30,8 @@ public class UserController {
          return  userService.updateUser(userId, request);
     }
 
-    @GetMapping
-    public UserResponse getUserByEmail(@RequestParam String userEmail){
+    @GetMapping("user/{userEmail}")
+    public UserResponse getUserByEmail(@PathVariable String userEmail){
         return userService.findByUserEmail(userEmail);
     }
 
