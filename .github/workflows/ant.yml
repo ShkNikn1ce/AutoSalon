@@ -24,4 +24,4 @@ jobs:
     - name: Make gradlew executable
       run: chmod +x ./gradlew
     - name: Build with Ant
-      run: ant -noinput -buildfile build.xml
+      run: ./gradlew build
