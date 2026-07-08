@@ -1,5 +1,7 @@
 package com.Nikita.AutoSalon.service;
 import com.Nikita.AutoSalon.dto.CreateSaleRequest;
+import com.Nikita.AutoSalon.dto.SaleDetailResponse;
+import com.Nikita.AutoSalon.dto.SaleResponse;
 import com.Nikita.AutoSalon.entity.Car;
 import com.Nikita.AutoSalon.entity.PurchaseRequest;
 import com.Nikita.AutoSalon.entity.Sale;
@@ -7,6 +9,7 @@ import com.Nikita.AutoSalon.entity.User;
 import com.Nikita.AutoSalon.enums.CarStatus;
 import com.Nikita.AutoSalon.enums.PurchaseRequestStatus;
 import com.Nikita.AutoSalon.enums.Roles;
+import com.Nikita.AutoSalon.mapper.SaleMapper;
 import com.Nikita.AutoSalon.repository.CarRepository;
 import com.Nikita.AutoSalon.repository.PurchaseRequestRepository;
 import com.Nikita.AutoSalon.repository.SaleRepository;
@@ -16,6 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -24,10 +28,11 @@ public class SaleService {
     private final SaleRepository saleRepository;
     private final UserRepository userRepository;
     private final CarRepository carRepository;
+    private final SaleMapper saleMapper;
     private final PurchaseRequestRepository purchaseRequestRepository;
 
     @Transactional
-    public Sale createSale(CreateSaleRequest saleRequest) {
+    public SaleDetailResponse createSale(CreateSaleRequest saleRequest) {
 
         //Поиск заявки
         PurchaseRequest purchaseRequestForSale = purchaseRequestRepository.findById(saleRequest.getPurchaseRequestId()).orElseThrow(() ->
@@ -56,6 +61,9 @@ public class SaleService {
 
         //Поиск клиента
         User customer = purchaseRequestForSale.getCustomer();
+        if(customer.getRole()!=Roles.CUSTOMER){
+            throw new RuntimeException("Данный пользователь не является клиентом!");
+        }
 
         //Создание продажи
         Sale newSale = new Sale();
@@ -73,32 +81,50 @@ public class SaleService {
         //Изменение статуса заявки
         purchaseRequestForSale.setStatus(PurchaseRequestStatus.COMPLETED);
 
-        return  saleRepository.save(newSale);
-    }
+        carRepository.save(carSale);
+        purchaseRequestRepository.save(purchaseRequestForSale);
+
+        Sale savedSale = saleRepository.save(newSale);
 
 
-    //Проверка существования записи о продаже
-    public boolean existsSale(Long saleId) {
+        return saleMapper.toDetailResponse(savedSale);
 
-        return saleRepository.existsById(saleId);
     }
 
     //Вывод списка всех покупок совершенных клиентом
-    public List<Sale> findSalesByCustomer(Long customerId) {
-        User customerSale = userRepository.findById(customerId).orElseThrow(() -> new RuntimeException("Такого пользователя не существует!"));
+    public List<SaleDetailResponse> findSalesByCustomer(Long id) {
+        User customerSale = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Такого пользователя не существует!"));
         if (customerSale.getRole() != Roles.CUSTOMER) {
             throw new RuntimeException("Данный пользователь не является клиентом!");
         }
+        List<Sale> salesCustomer = saleRepository.findAllByCustomerId(id);
+        List<SaleDetailResponse> responsesCustomer = new ArrayList<>();
 
-        return saleRepository.findAllByCustomerId(customerId);
+        for(Sale sale : salesCustomer){
+            responsesCustomer.add(saleMapper.toDetailResponse(sale));
+        }
+        return responsesCustomer;
     }
 
     //Список всех сделок проведенный сотрудником
-    public List<Sale> findSalesByManager(Long managerId) {
-        User managerSale = userRepository.findById(managerId).orElseThrow(() -> new RuntimeException("Такого пользователя не существует!"));
+    public List<SaleResponse> findSalesByManager(Long id) {
+        User managerSale = userRepository.findById(id).orElseThrow(() -> new RuntimeException("Такого пользователя не существует!"));
         if (managerSale.getRole() != Roles.MANAGER) {
             throw new RuntimeException("Данный пользователь не является сотрудником!");
         }
-        return saleRepository.findAllByManagerId(managerId);
+        List<Sale> salesManager = saleRepository.findAllByManagerId(id);
+        List<SaleResponse> responsesManager = new ArrayList<>();
+
+        for(Sale sale : salesManager){
+            responsesManager.add(saleMapper.toResponse(sale));
+        }
+
+        return responsesManager;
+
+    }
+
+    //Проверка существования записи о продаже
+    public boolean existsSale(Long saleId) {
+        return saleRepository.existsById(saleId);
     }
 }

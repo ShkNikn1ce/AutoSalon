@@ -5,7 +5,9 @@ import com.Nikita.AutoSalon.dto.UpdateUserRequest;
 import com.Nikita.AutoSalon.dto.UserResponse;
 import com.Nikita.AutoSalon.entity.User;
 import com.Nikita.AutoSalon.enums.Roles;
+import com.Nikita.AutoSalon.mapper.UserMapper;
 import com.Nikita.AutoSalon.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +19,18 @@ import java.util.List;
 @AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     //Создание пользователя
-    public UserResponse createUser(CreateUserRequest request) throws Exception {
+    @Transactional
+    public UserResponse createUser(CreateUserRequest request)  {
 
         if(userRepository.existsByEmail(request.getEmail())){
-            throw new Exception("Пользователь с таким email уже существует");
+            throw new RuntimeException("Пользователь с таким email уже существует");
         }
 
         if(userRepository.existsByPhone(request.getPhone())){
-            throw new Exception("Пользователь с таким номером телефона уже существует");
+            throw new RuntimeException("Пользователь с таким номером телефона уже существует");
         }
 
         User user = new User();
@@ -41,15 +45,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        UserResponse response = new UserResponse();
-
-        response.setUserId(savedUser.getId());
-        response.setFirstName(savedUser.getFirstName());
-        response.setLastName(savedUser.getLastName());
-        response.setEmail(savedUser.getEmail());
-        response.setPhone(savedUser.getPhone());
-
-        return response;
+        return userMapper.toResponse(savedUser);
     }
 
     //Удаление пользователя

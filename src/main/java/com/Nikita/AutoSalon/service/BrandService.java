@@ -4,7 +4,9 @@ import com.Nikita.AutoSalon.dto.BrandResponse;
 import com.Nikita.AutoSalon.dto.CreateBrandRequest;
 import com.Nikita.AutoSalon.dto.UpdateBrandRequest;
 import com.Nikita.AutoSalon.entity.Brand;
+import com.Nikita.AutoSalon.mapper.BrandMapper;
 import com.Nikita.AutoSalon.repository.BrandRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,15 +17,16 @@ import java.util.List;
 @AllArgsConstructor
 public class BrandService {
     private final BrandRepository brandRepository;
+    private final BrandMapper brandMapper;
 
     //Создание нового бренда
-    public BrandResponse createBrand(CreateBrandRequest request){
-
+    @Transactional
+    public BrandResponse createBrand(CreateBrandRequest request) {
         if (request.getName() == null || request.getName().isBlank()) {
             throw new RuntimeException("Название бренда обязательно");
         }
 
-        if(brandRepository.existsByName(request.getName())){
+        if (brandRepository.existsByName(request.getName())) {
             throw new RuntimeException("Такой брэнд уже существует");
         }
 
@@ -32,35 +35,30 @@ public class BrandService {
 
         Brand savedBrand = brandRepository.save(brand);
 
-        BrandResponse response = new BrandResponse();
-
-        response.setBrandId(savedBrand.getId());
-        response.setBrand(savedBrand.getName());
-
-        return response;
+        return brandMapper.toResponse(savedBrand);
     }
 
     //Удаление брэнда
-    public void deleteBrand(Long id){
+    public void deleteBrand(Long id) {
         Brand brand = brandRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Брэнда с таким ID не найдено!"));
+                .orElseThrow(() -> new RuntimeException("Брэнда с таким ID не найдено!"));
 
         brandRepository.delete(brand);
     }
 
     //Обновление данных бренда
-    public BrandResponse updateBrand(Long id, UpdateBrandRequest request){
+    public BrandResponse updateBrand(Long id, UpdateBrandRequest request) {
         Brand updateBrand = brandRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Такой бренд уже существует!"));
+                .orElseThrow(() -> new RuntimeException("Такой бренд уже существует!"));
 
-        if(!updateBrand.getName().equals(request.getName())&& brandRepository.existsByName(request.getName())){
-            throw  new RuntimeException("Такой брэнд уже существует");
+        if (!updateBrand.getName().equals(request.getName()) && brandRepository.existsByName(request.getName())) {
+            throw new RuntimeException("Такой брэнд уже существует");
         }
         updateBrand.setName(request.getName());
 
         Brand savedUpdateBrand = brandRepository.save(updateBrand);
 
-        BrandResponse response =new BrandResponse();
+        BrandResponse response = new BrandResponse();
         response.setBrandId(savedUpdateBrand.getId());
         response.setBrand(savedUpdateBrand.getName());
 
@@ -68,9 +66,9 @@ public class BrandService {
     }
 
     //Поиск бренда по названию
-    public BrandResponse findByBrandName(String name){
+    public BrandResponse findByBrandName(String name) {
         Brand brand = brandRepository.findByName(name)
-                .orElseThrow(()-> new RuntimeException("Такого брэнда не существует!"));
+                .orElseThrow(() -> new RuntimeException("Такого брэнда не существует!"));
 
         BrandResponse response = new BrandResponse();
         response.setBrandId(brand.getId());
@@ -80,22 +78,22 @@ public class BrandService {
     }
 
     //Поиск всех брэндов
-    public List<BrandResponse> findAllBrands(){
-        List<Brand> brands= brandRepository.findAll();
+    public List<BrandResponse> findAllBrands() {
+        List<Brand> brands = brandRepository.findAll();
         List<BrandResponse> responses = new ArrayList<>();
 
-        for(Brand brand : brands){
+        for (Brand brand : brands) {
             BrandResponse response = new BrandResponse();
             response.setBrandId(brand.getId());
             response.setBrand(brand.getName());
 
             responses.add(response);
         }
-        return  responses;
+        return responses;
     }
 
     //Проверка существования брэнда
-    public boolean existsBrand(String brand){
+    public boolean existsBrand(String brand) {
         return brandRepository.existsByName(brand);
     }
 }

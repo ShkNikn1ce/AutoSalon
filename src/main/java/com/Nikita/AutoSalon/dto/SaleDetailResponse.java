@@ -1,11 +1,17 @@
 package com.Nikita.AutoSalon.dto;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
 public class SaleDetailResponse {
     private Long id;
 
-    private Long carId;
+    private String vin;
     private String brand;
     private String model;
     private int year;
@@ -22,4 +28,5 @@ public class SaleDetailResponse {
     private String customerEmail;
 
     private BigDecimal finalPrice;
+    private LocalDateTime saleDate;
 }

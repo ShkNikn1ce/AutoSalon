@@ -1,5 +1,6 @@
 package com.Nikita.AutoSalon.repository;
 
+import com.Nikita.AutoSalon.dto.PurchaseRequestResponse;
 import com.Nikita.AutoSalon.entity.PurchaseRequest;
 import com.Nikita.AutoSalon.enums.PurchaseRequestStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
