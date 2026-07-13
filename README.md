@@ -1,4 +1,4 @@
-# 🚗 Car Dealership Management System
+# 🚗 Система управления автосалоном
 
 REST API для управления автосалоном, разработанный на **Java + Spring Boot**.
 
