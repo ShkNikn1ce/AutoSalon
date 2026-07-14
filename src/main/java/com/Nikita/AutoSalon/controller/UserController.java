@@ -15,9 +15,19 @@ public class UserController {
 
     private final UserService userService;
 
-    @PostMapping("/new-user")
+    @PostMapping
     public UserResponse createUser(@RequestBody CreateUserRequest request) throws Exception {
         return userService.createUser(request);
+    }
+
+    @GetMapping("/{userEmail}")
+    public UserResponse getUserByEmail(@PathVariable String userEmail){
+        return userService.findByUserEmail(userEmail);
+    }
+
+    @GetMapping //Проверено
+    public List<UserResponse> getAllUsers() {
+        return userService.findAllUsers();
     }
 
     @DeleteMapping("/{userId}")
@@ -30,13 +40,4 @@ public class UserController {
          return  userService.updateUser(userId, request);
     }
 
-    @GetMapping("user/{userEmail}")
-    public UserResponse getUserByEmail(@PathVariable String userEmail){
-        return userService.findByUserEmail(userEmail);
-    }
-
-    @GetMapping
-    public List<UserResponse> getAllUsers(){
-        return userService.findAllUsers();
-    }
 }

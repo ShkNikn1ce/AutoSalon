@@ -27,6 +27,8 @@ public class SaleDetailResponse {
     private String customerPhone;
     private String customerEmail;
 
+    private Long purchaseRequestId;
+
     private BigDecimal finalPrice;
     private LocalDateTime saleDate;
 }

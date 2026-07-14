@@ -44,8 +44,8 @@ public class SaleService {
 
         //Поиск машины
         Car carSale = purchaseRequestForSale.getCar();
-        if (carSale.getStatus() != CarStatus.AVAILABLE) {
-            throw new RuntimeException("Данный автомобиль недоступен!");
+        if (carSale.getStatus() != CarStatus.RESERVED){
+            throw new RuntimeException("На данный автомобиль не существует заявки!");
         }
 
         //Поиск сотрудника
@@ -55,13 +55,13 @@ public class SaleService {
                     "Для заявки не назначен менеджер"
             );
         }
-        if(manager.getRole()!=Roles.MANAGER){
+        if (manager.getRole() != Roles.MANAGER) {
             throw new RuntimeException("Данный пользователь не является сотрудником!");
         }
 
         //Поиск клиента
         User customer = purchaseRequestForSale.getCustomer();
-        if(customer.getRole()!=Roles.CUSTOMER){
+        if (customer.getRole() != Roles.CUSTOMER) {
             throw new RuntimeException("Данный пользователь не является клиентом!");
         }
 
@@ -72,6 +72,7 @@ public class SaleService {
         newSale.setCar(carSale);
         newSale.setManager(manager);
         newSale.setCustomer(customer);
+        newSale.setPurchaseRequest(purchaseRequestForSale);
         newSale.setSaleDate(LocalDateTime.now());
         newSale.setFinalPrice(carSale.getPrice());
 
@@ -100,7 +101,7 @@ public class SaleService {
         List<Sale> salesCustomer = saleRepository.findAllByCustomerId(id);
         List<SaleDetailResponse> responsesCustomer = new ArrayList<>();
 
-        for(Sale sale : salesCustomer){
+        for (Sale sale : salesCustomer) {
             responsesCustomer.add(saleMapper.toDetailResponse(sale));
         }
         return responsesCustomer;
@@ -115,7 +116,7 @@ public class SaleService {
         List<Sale> salesManager = saleRepository.findAllByManagerId(id);
         List<SaleResponse> responsesManager = new ArrayList<>();
 
-        for(Sale sale : salesManager){
+        for (Sale sale : salesManager) {
             responsesManager.add(saleMapper.toResponse(sale));
         }
 

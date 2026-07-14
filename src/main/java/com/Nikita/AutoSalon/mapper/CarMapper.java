@@ -11,6 +11,7 @@ public class CarMapper {
 
         CarResponse response = new CarResponse();
 
+        response.setBrand(request.getBrand().getName());
         response.setModel(request.getModel());
         response.setYear(request.getYear());
         response.setPrice(request.getPrice());

@@ -14,7 +14,7 @@ import java.util.List;
 public class BrandController {
     private final BrandService brandService;
 
-    @PostMapping()
+    @PostMapping
     public BrandResponse createBrand(@RequestBody CreateBrandRequest request) throws RuntimeException {
         return brandService.createBrand(request);
     }

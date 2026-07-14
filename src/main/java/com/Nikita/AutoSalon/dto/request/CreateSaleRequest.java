@@ -7,5 +7,5 @@ import lombok.Setter;
 @Setter
 public class CreateSaleRequest {
     private Long purchaseRequestId;
-    private Long managerId;
+    //private Long managerId;
 }

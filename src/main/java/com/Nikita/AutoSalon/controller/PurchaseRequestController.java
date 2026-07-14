@@ -19,7 +19,7 @@ public class PurchaseRequestController {
         return purchaseRequestService.createRequest(request);
     }
 
-    @GetMapping
+    @GetMapping("/{status}")
     public List<PurchaseRequestResponse> getPurchaseRequestByStatus(@PathVariable PurchaseRequestStatus status){
         return purchaseRequestService.findAllByStatus(status);
     }

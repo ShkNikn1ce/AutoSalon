@@ -9,7 +9,7 @@ public class UserMapper {
     public UserResponse toResponse(User request){
         UserResponse response = new UserResponse();
 
-        response.setUserId(request.getId());
+        response.setId(request.getId());
         response.setFirstName(request.getFirstName());
         response.setLastName(request.getLastName());
         response.setEmail(request.getEmail());

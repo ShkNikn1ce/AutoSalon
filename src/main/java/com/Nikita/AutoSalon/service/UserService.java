@@ -80,7 +80,7 @@ public class UserService {
 
         UserResponse response = new UserResponse();
 
-        response.setUserId(saveUpdateUser.getId());
+        response.setId(saveUpdateUser.getId());
         response.setFirstName(saveUpdateUser.getFirstName());
         response.setLastName(saveUpdateUser.getLastName());
         response.setEmail(saveUpdateUser.getEmail());
@@ -94,7 +94,7 @@ public class UserService {
                 new RuntimeException("Пользователя с данным email не существует"));
 
         UserResponse response = new UserResponse();
-        response.setUserId(user.getId());
+        response.setId(user.getId());
         response.setFirstName(user.getFirstName());
         response.setLastName(user.getLastName());
         response.setEmail(user.getEmail());
@@ -109,7 +109,7 @@ public class UserService {
 
          for (User user: users){
              UserResponse response = new UserResponse();
-             response.setUserId(user.getId());
+             response.setId(user.getId());
              response.setFirstName(user.getFirstName());
              response.setLastName(user.getLastName());
              response.setEmail(user.getEmail());

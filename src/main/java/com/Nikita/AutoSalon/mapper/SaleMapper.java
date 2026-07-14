@@ -3,12 +3,14 @@ package com.Nikita.AutoSalon.mapper;
 import com.Nikita.AutoSalon.dto.response.SaleDetailResponse;
 import com.Nikita.AutoSalon.dto.response.SaleResponse;
 import com.Nikita.AutoSalon.entity.Car;
+import com.Nikita.AutoSalon.entity.PurchaseRequest;
 import com.Nikita.AutoSalon.entity.Sale;
 import com.Nikita.AutoSalon.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SaleMapper {
+
     public SaleDetailResponse toDetailResponse(Sale request){
 
         SaleDetailResponse response = new SaleDetailResponse();
@@ -36,6 +38,9 @@ public class SaleMapper {
 
         response.setCustomerPhone(responseCustomer.getPhone());
         response.setCustomerEmail(responseCustomer.getEmail());
+
+        PurchaseRequest responsePurchaseRequest = request.getPurchaseRequest();
+        response.setPurchaseRequestId(responsePurchaseRequest.getId());
 
         response.setFinalPrice(request.getFinalPrice());
         response.setSaleDate(request.getSaleDate());

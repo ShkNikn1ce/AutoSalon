@@ -29,8 +29,8 @@ public class Sale {
     private User customer;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "sale_id", nullable = false)
-    private Sale sale;
+    @JoinColumn(name = "purchase_request_id", nullable = false, unique = true)
+    private PurchaseRequest purchaseRequest;
 
     @Column(nullable = false)
     private LocalDateTime saleDate;

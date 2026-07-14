@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class CarService {
 
     //Создание автомобиля
     @Transactional
-    public CarResponse createCar(CreateCarRequest request) {
+    public CarResponse createCar(CreateCarRequest request){
         Brand brand = brandRepository.findById(request.getBrandId())
                 .orElseThrow(() -> new RuntimeException("Такого брэнда не существует!"));
 
@@ -56,6 +57,7 @@ public class CarService {
         car.setMileage(request.getMileage());
         car.setPrice(request.getPrice());
         car.setStatus(CarStatus.AVAILABLE);
+        car.setCreatedAt(LocalDateTime.now());
 
         Car savedCar = carRepository.save(car);
 
