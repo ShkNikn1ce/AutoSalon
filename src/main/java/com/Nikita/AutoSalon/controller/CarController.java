@@ -21,6 +21,7 @@ import java.util.List;
 @RequestMapping("/cars")
 public class CarController {
     private final CarService carService;
+
     @Operation(
             summary = "Создать новый автомобиль",
             description = "Создает запись о новом автомобиле в системе"
@@ -29,11 +30,8 @@ public class CarController {
             @ApiResponse(responseCode = "201", description = "Автомобиль успешно создан"),
             @ApiResponse(responseCode = "400", description = "Неверные данные запроса"),
             @ApiResponse(responseCode = "500", description = "Такой автомобиль уже существует")
-    }
-
-    )
+    })
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public CarResponse createCar(@RequestBody CreateCarRequest request){
         return carService.createCar(request);
     }
@@ -46,7 +44,6 @@ public class CarController {
             @ApiResponse(responseCode = "200", description = "Успешный вывод списка всех автомобилей"),
             @ApiResponse(responseCode = "404", description = "Указанный путь не найден")
     }
-
     )
     @GetMapping
     public List<CarResponse> getAllCars(){
