@@ -1,9 +1,0 @@
-version:
-
-services:
-  app:
-  postgres:
-
-networks:
-
-volumes:
