@@ -9,6 +9,7 @@ import com.Nikita.AutoSalon.mapper.UserMapper;
 import com.Nikita.AutoSalon.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
     //Создание пользователя
     @Transactional
@@ -33,13 +35,17 @@ public class UserService {
             throw new RuntimeException("Пользователь с таким номером телефона уже существует");
         }
 
+        if(request.getPassword()==null || request.getPassword().length()<6){
+            throw new RuntimeException("Пароль дожен содержать минимум 6 символов");
+        }
+
         User user = new User();
 
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
         user.setEmail(request.getEmail());
         user.setPhone(request.getPhone());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Roles.CUSTOMER);
         user.setCreatedAt(LocalDateTime.now());
 
