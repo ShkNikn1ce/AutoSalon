@@ -9,6 +9,8 @@ import com.Nikita.AutoSalon.entity.User;
 import com.Nikita.AutoSalon.enums.CarStatus;
 import com.Nikita.AutoSalon.enums.PurchaseRequestStatus;
 import com.Nikita.AutoSalon.enums.Roles;
+import com.Nikita.AutoSalon.kafka.dto.SaleCreateEvent;
+import com.Nikita.AutoSalon.kafka.producer.SaleEventProducer;
 import com.Nikita.AutoSalon.mapper.SaleMapper;
 import com.Nikita.AutoSalon.repository.CarRepository;
 import com.Nikita.AutoSalon.repository.PurchaseRequestRepository;
@@ -17,6 +19,8 @@ import com.Nikita.AutoSalon.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,6 +34,7 @@ public class SaleService {
     private final CarRepository carRepository;
     private final SaleMapper saleMapper;
     private final PurchaseRequestRepository purchaseRequestRepository;
+    private final SaleEventProducer saleEventProducer;
 
     @Transactional
     public SaleDetailResponse createSale(CreateSaleRequest saleRequest) {
@@ -86,7 +91,7 @@ public class SaleService {
         purchaseRequestRepository.save(purchaseRequestForSale);
 
         Sale savedSale = saleRepository.save(newSale);
-
+        publishSaleCreated(savedSale);
 
         return saleMapper.toDetailResponse(savedSale);
 
@@ -122,6 +127,26 @@ public class SaleService {
 
         return responsesManager;
 
+    }
+
+    private void publishSaleCreated(Sale savedSale) {
+        SaleCreateEvent event = new SaleCreateEvent(
+                savedSale.getId(),
+                savedSale.getCar().getId(),
+                savedSale.getCustomer().getEmail()
+        );
+
+        if (TransactionSynchronizationManager.isSynchronizationActive()) {
+            TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+                @Override
+                public void afterCommit() {
+                    saleEventProducer.send(event);
+                }
+            });
+            return;
+        }
+
+        saleEventProducer.send(event);
     }
 
     //Проверка существования записи о продаже
